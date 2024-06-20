@@ -2,12 +2,20 @@
 
 namespace App;
 
-use Lalaz\Bootstrap;
+use Lalaz\Lalaz;
+use Lalaz\Logging\Logger;
+use Lalaz\Logging\LogToConsole;
 
 class App
 {
-    public static function run(): void {
-        require __DIR__ . '/Config/index.php';
-        Bootstrap::boot(new Routes());
+    public static function start(): void
+    {
+        $logger = new Logger();
+        $logger->writeTo(new LogToConsole());
+
+
+        $app = new Lalaz(__DIR__, $logger);
+        require 'Routes/web.php';
+        $app->run();
     }
 }

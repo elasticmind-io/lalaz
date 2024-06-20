@@ -3,7 +3,8 @@
     "type": "library",
     "autoload": {
         "psr-4": {
-            "App\\": "src/App"
+            "App\\": "src/App",
+            "Lalaz\\": "src/Lalaz"
         }
     },
     "authors": [
@@ -14,7 +15,6 @@
     ],
     "require": {
         "php": "^8.2",
-        "elasticmind/lalaz-framework": "^1.0",
         "twig/twig": "^3.0"
     }
 }
