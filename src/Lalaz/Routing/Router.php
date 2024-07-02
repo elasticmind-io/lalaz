@@ -109,7 +109,7 @@ class Router
                 }
 
                 $controllerInstance = new $class;
-                $controllerInstance->{$function}($req, $res);
+                $controllerInstance->callAction($function, [$req, $res]);
 
                 return;
             }

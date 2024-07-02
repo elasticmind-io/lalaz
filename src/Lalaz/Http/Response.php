@@ -16,21 +16,63 @@ class Response
     use FlashMessage;
 
     private $session;
+    private $viewBag = array();
 
     public function __construct()
     {
         $this->session = $_SESSION;
     }
 
-    public function addSession($key, $value): void
+    public function addViewBag(string $name, mixed $value): Response
     {
-        $this->session = $_SERVER[$key] = $value;
+        $this->viewBag[$name] = $value;
+        return $this;
+    }
+
+    public function addSession(string $key, mixed $value): Response
+    {
+        $_SESSION[$key] = $value;
+        $this->session = $_SESSION;
+        return $this;
+    }
+
+    public function destroySession(): Response
+    {
+        session_destroy();
+        return $this;
+    }
+
+    public function addCookie(
+        $key,
+        $value,
+        $expires,
+        $path = "/",
+        $domain = "",
+        $secure = true,
+        $httpOnly = true): Response
+    {
+        setcookie(
+            $cookie_name,
+            $cookie_value,
+            $expires,
+            $path,
+            $domain,
+            $secure,
+            $httpOnly);
+
+        return $this;
+    }
+
+    public function deleteCookie(string $key): Response
+    {
+        setcookie($key, '', time() - 3600);
+        return $this;
     }
 
     function flash(
         string $name = '',
         string $message = '',
-        string $type = ''): HttpResponse
+        string $type = ''): Response
     {
         if ($name !== '' && $message !== '' && $type !== '') {
             self::createFlashMessage($name, $message, $type);
@@ -39,15 +81,25 @@ class Response
         return $this;
     }
 
-    public function redirect($url): void
+    public function redirect(string $url): void
     {
+        $host = $_SERVER['HTTP_HOST'];
         header("Location: ${url}");
         exit();
     }
 
-    public function render($view, $params = []): void
+    public function render(string $view, $params = []): void
     {
-        View::render($view, $params);
+        $csrfToken = static::generateCsrfToken();
+        $this->addSession('csrfToken', $csrfToken);
+
+        $data = [
+            ...$params,
+            ...$this->viewBag,
+            'csrfToken' => $csrfToken
+        ];
+
+        View::render($view, $data);
         exit();
     }
 
@@ -62,5 +114,10 @@ class Response
     public function end(): void
     {
         exit();
+    }
+
+    private static function generateCsrfToken()
+    {
+        return bin2hex(random_bytes(35));
     }
 }

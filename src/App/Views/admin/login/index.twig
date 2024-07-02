@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="pt-BR" class="min-h-full h-full" data-theme="light">
+<head>
+  <title>Login</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link
+    rel="stylesheet"
+    href="https://cdn.jsdelivr.net/npm/rippleui@1.12.1/dist/css/styles.css"
+  />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet">
+</head>
+<body class="bg-gray-100 h-full py-16">
+  <main class="w-full max-w-md mx-auto p-6">
+    {% include 'admin/components/flash.twig' %}
+
+    <div class="mt-7 bg-white border border-gray-200 rounded-xl shadow-sm">
+      <div class="p-4 sm:p-7">
+        <div class="text-center">
+          <h1 class="block text-2xl font-bold text-gray-800">Login</h1>
+        </div>
+
+        <div class="mt-5">
+          <form method="POST" action="/admin/login">
+            <input type="hidden" name="csrfToken" value="{{csrfToken}}">
+
+            <div class="grid gap-y-4 w-full">
+              <div>
+                <label for="username" class="block text-sm mb-2">Username</label>
+                <input type="text" id="username" name="username" placeholder="Username" class="input input-block" />
+              </div>
+
+              <div>
+                <div class="flex justify-between items-center">
+                  <label for="password" class="block text-sm mb-2">Password</label>
+                  <a class="link link-hover" href="#">Forgot password?</a>
+                </div>
+
+                <div>
+                  <input type="password" id="password" name="password" placeholder="Password" class="input input-block" />
+                </div>
+              </div>
+
+              <button type="submit" class="btn btn-primary">Login</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </main>
+</body>
+</html>

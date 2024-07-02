@@ -6,6 +6,57 @@ define('LALAZ_START', microtime(true));
 // Register the Composer autoloader...
 require __DIR__ . '/vendor/autoload.php';
 
-print('Hello From Lalaz Commandline');
+$command = $argv[1];
+$name = $argv[2];
+
+$lname = strtolower($name);
+
+$controllerContent = <<<PHP
+<?php declare(strict_types=1);
+
+namespace App\Controllers;
+
+use Lalaz\Http\Controller;
+
+class ${name}Controller extends Controller
+{
+    public function index(\$req, \$res)
+    {
+
+    }
+}
+
+PHP;
+
+$modelContent = <<<PHP
+<?php declare(strict_types=1);
+
+namespace App\Models;
+
+use Lalaz\Data\ActiveRecord;
+
+class User extends ActiveRecord
+{
+    public static function tableName(): string
+    {
+        return '$lname';
+    }
+}
+
+PHP;
+
+switch ($command) {
+    case 'g:controller':
+        $filename = "./src/App/Controllers/{$name}Controller.php";
+        file_put_contents($filename, $controllerContent);
+        echo "Controller {$name}Controller created successfully!\n";
+        break;
+
+    case 'g:model':
+        $filename = "./src/App/Models/{$name}Model.php";
+        file_put_contents($filename, $modelContent);
+        echo "Model {$name}Model created successfully!\n";
+        break;
+}
 
 exit(0);

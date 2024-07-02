@@ -1,14 +1,5 @@
 <?php declare(strict_types=1);
 
-namespace Lalaz;
-
-const FLASH = 'FLASH_MESSAGES';
-
-const FLASH_ERROR = 'error';
-const FLASH_WARNING = 'warning';
-const FLASH_INFO = 'info';
-const FLASH_SUCCESS = 'success';
-
 namespace Lalaz\Http;
 
 /**
@@ -20,24 +11,30 @@ namespace Lalaz\Http;
  */
 trait FlashMessage
 {
+    public const FLASH = 'FLASH_MESSAGES';
+    public const FLASH_ERROR = 'error';
+    public const FLASH_WARNING = 'warning';
+    public const FLASH_INFO = 'info';
+    public const FLASH_SUCCESS = 'success';
+
     function createFlashMessage(string $name, string $message, string $type): void
     {
-        if (isset($_SESSION[FLASH][$name])) {
-            unset($_SESSION[FLASH][$name]);
+        if (isset($_SESSION[self::FLASH][$name])) {
+            unset($_SESSION[self::FLASH][$name]);
         }
 
-        $_SESSION[FLASH][$name] = ['message' => $message, 'type' => $type];
+        $_SESSION[self::FLASH][$name] = ['message' => $message, 'type' => $type];
     }
 
-    function showFlashMessage(string $name): string
+    static function showFlashMessage(string $name): mixed
     {
-        if (!isset($_SESSION[FLASH][$name])) {
-            return '';
+        if (!isset($_SESSION[self::FLASH][$name])) {
+            return false;
         }
 
-        $flash_message = $_SESSION[FLASH][$name];
+        $flash_message = $_SESSION[self::FLASH][$name];
 
-        unset($_SESSION[FLASH][$name]);
+        unset($_SESSION[self::FLASH][$name]);
 
         return $flash_message;
     }

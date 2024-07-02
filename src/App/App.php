@@ -10,12 +10,11 @@ class App
 {
     public static function start(): void
     {
-        $logger = new Logger();
-        $logger->writeTo(new LogToConsole());
-
-
+        $logger = Logger::create()->writeTo(new LogToConsole());
         $app = new Lalaz(__DIR__, $logger);
+
         require 'Routes/web.php';
+
         $app->run();
     }
 }

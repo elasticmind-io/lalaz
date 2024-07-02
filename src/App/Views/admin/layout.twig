@@ -1,0 +1,20 @@
+<!doctype html>
+<html lang="pt-BR" class="light" data-theme="light">
+<head>
+  <title>Lalaz | Admin</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link
+    rel="stylesheet"
+    href="https://cdn.jsdelivr.net/npm/rippleui@1.12.1/dist/css/styles.css"
+  />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet">
+</head>
+<body>
+  <div class="flex flex-row sm:gap-10">
+    {% include 'admin/components/sidebar.twig' %}
+    {% block content %}{% endblock %}
+  </div>
+</body>
+</html>

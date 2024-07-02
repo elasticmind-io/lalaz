@@ -3,33 +3,39 @@
 namespace App\Models;
 
 use Lalaz\Data\ActiveRecord;
+use Lalaz\Data\Query\Expressions;
+use Lalaz\Security\PasswordHash;
+use Lalaz\Security\Authenticable;
 
 class User extends ActiveRecord
 {
-    public string $role = 'USER';
-    public string $name;
-    public string $email;
+    use Authenticable;
+
+    public int $id;
+    public string $username;
     public string $password;
-    public string $dob;
-    public ?string $activationCode;
-    public int $activated;
-    public string $activatedAt;
-    public string $createdAt;
-    public string $updatedAt;
+    public string $role;
+    public int $active;
 
     public static function tableName(): string
     {
         return 'user';
     }
 
-    public static function countById()
+    public static function findByUsername(string $username): User|bool
     {
-        $q = self::expression()
-            ->gte('id', 6);
+        $filter = Expressions::create()->eq('username', $username);
+        $user = self::findOneByExpression($filter);
+        return $user;
+    }
 
-        return self::findAllByExpression(
-            $q,
-            ['id' => 'DESC']
-        );
+    private static function loginField(): string
+    {
+        return 'username';
+    }
+
+    private static function passwordField(): string
+    {
+        return 'password';
     }
 }

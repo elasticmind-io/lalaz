@@ -23,4 +23,11 @@ abstract class Model
 
         return $result;
     }
+
+    public function hide(string ...$props): void
+    {
+        foreach ($props as $prop) {
+            unset($this->{$prop});
+        }
+    }
 }
