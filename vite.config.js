@@ -15,7 +15,7 @@ function updateManifestWithImages({ outDir, imageDir }) {
 
         images.forEach((image) => {
           const imageName = path.basename(image)
-          manifest[`assets/img/${imageName}`] = { file: `img/${imageName}` }
+          manifest[`App/Assets/img/${imageName}`] = { file: `img/${imageName}` }
         })
 
         fs.writeFileSync(manifestPath, JSON.stringify(manifest, null, 2))
@@ -34,8 +34,8 @@ export default defineConfig({
     manifest: 'manifest.json',
     rollupOptions: {
       input: {
-        main: './src/assets/js/main.js',
-        styles: './src/assets/css/styles.css'
+        'admin.module.js': './src/App/Assets/js/main.js',
+        'admin.module.css': './src/App/Assets/css/styles.css'
       },
       output: {
         entryFileNames: 'js/[name].[hash].js',
@@ -52,15 +52,15 @@ export default defineConfig({
     copy({
       targets: [
         {
-          src: path.resolve('./src/assets/img/**/*'),
-          dest: path.resolve('./public/dist/img')
+          src: './src/App/Assets/img/**',
+          dest: './public/dist/img'
         }
       ],
       hook: 'writeBundle',
     }),
     updateManifestWithImages({
-      outDir: path.resolve('./public/dist'),
-      imageDir: path.resolve('./public/dist/img')
+      outDir: './public/dist',
+      imageDir: './public/dist/img'
     })
   ],
 })
