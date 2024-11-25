@@ -1,24 +1,66 @@
-{
-    "name": "elasticmind/lalaz",
-    "type": "library",
-    "license": "MIT",
-    "autoload": {
-        "psr-4": {
-            "App\\": "src/App"
-        },
-        "files": [
-            "src/App/Config/bootstrap.php"
-        ]
-    },
-    "authors": [
-        {
-            "name": "Gregory Serrao",
-            "email": "ola@elasticmind.io"
-        }
-    ],
-    "require": {
-        "php": "^8.2",
-        "twig/twig": "^3.0",
-        "elasticmind/lalaz-framework": "^1.0"
+import fs from 'fs'
+import path from 'path'
+import copy from 'rollup-plugin-copy'
+import { defineConfig } from 'vite'
+
+function updateManifestWithImages({ outDir, imageDir }) {
+  return {
+    name: 'add-images-to-manifest',
+    closeBundle: () => {
+      const manifestPath = path.resolve(outDir, 'manifest.json')
+
+      if (fs.existsSync(manifestPath)) {
+        const manifest = JSON.parse(fs.readFileSync(manifestPath, 'utf-8'))
+        const images = fs.readdirSync(imageDir)
+
+        images.forEach((image) => {
+          const imageName = path.basename(image)
+          manifest[`App/Assets/img/${imageName}`] = { file: `img/${imageName}` }
+        })
+
+        fs.writeFileSync(manifestPath, JSON.stringify(manifest, null, 2))
+      } else {
+        console.error(`[add-images-to-manifest] manifest.json não encontrado em ${manifestPath}`)
+      }
     }
+  }
 }
+
+export default defineConfig({
+  root: 'src',
+  build: {
+    outDir: '../public/dist',
+    emptyOutDir: true,
+    manifest: 'manifest.json',
+    rollupOptions: {
+      input: {
+        'admin.module.js': './src/App/Assets/js/admin.js',
+        'admin.module.css': './src/App/Assets/css/admin.css'
+      },
+      output: {
+        entryFileNames: 'js/[name].[hash].js',
+        assetFileNames: (assetInfo) => {
+          if (assetInfo.name.endsWith('.css')) {
+            return 'css/[name].[hash][extname]'
+          }
+          return '[name].[hash][extname]'
+        }
+      }
+    }
+  },
+  plugins: [
+    copy({
+      targets: [
+        {
+          src: './src/App/Assets/img/**',
+          dest: './public/dist/img'
+        }
+      ],
+      hook: 'writeBundle',
+    }),
+    updateManifestWithImages({
+      outDir: './public/dist',
+      imageDir: './public/dist/img'
+    })
+  ],
+})
