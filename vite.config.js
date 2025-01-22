@@ -34,8 +34,8 @@ export default defineConfig({
     manifest: 'manifest.json',
     rollupOptions: {
       input: {
-        'admin.module.js': './src/App/Assets/js/main.js',
-        'admin.module.css': './src/App/Assets/css/styles.css'
+        'main.module.js': './src/App/Assets/js/main.js',
+        'styles.module.css': './src/App/Assets/css/styles.css'
       },
       output: {
         entryFileNames: 'js/[name].[hash].js',
