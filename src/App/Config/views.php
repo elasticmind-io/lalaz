@@ -8,5 +8,8 @@ return [
     'provider' => env('TEMPLATE_PROVIDER', TwigTemplateEngine::class),
 
     // Define the views path of the app
-    'path' => env('VIEWS_PATH', '/Views')
+    'path' => env('VIEWS_PATH', '/Views'),
+
+    // Define the view extensions of the app
+    'extensions' => env("VIEW_EXTENSIONS", []),
 ];
