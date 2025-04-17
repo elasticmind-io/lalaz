@@ -1,7 +1,7 @@
 {
-  "name": "lalaz",
-  "version": "1.0.0",
-  "description": "Lalaz is a MVC based web application framework.",
+  "name": "@elasticmind/lalaz",
+  "version": "1.1.0",
+  "description": "Lalaz Bootstrap Application.",
   "main": "index.js",
   "type": "module",
   "scripts": {
@@ -13,7 +13,6 @@
   "author": "",
   "license": "ISC",
   "devDependencies": {
-    "alpinejs": "^3.14.1",
     "autoprefixer": "^10.4.20",
     "postcss": "^8.4.47",
     "rollup-plugin-copy": "^3.5.0",
