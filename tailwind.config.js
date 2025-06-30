@@ -1,16 +1,12 @@
 /** @type {import('tailwindcss').Config} */
 export default {
   content: [
-    './src/**/*.{html,js,php,twig}'
+    "./src/**/*.{html,js,twig,php}",
+    "./src/App/Views/**/*.twig",
+    "./src/App/Assets/**/*.{js,css}"
   ],
-  darkMode: 'selector',
   theme: {
-    extend: {
-      colors: {
-        'purple-500': '#7420c2'
-      }
-    },
+    extend: {},
   },
   plugins: [],
 }
-

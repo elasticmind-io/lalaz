@@ -2,6 +2,7 @@ import fs from 'fs'
 import path from 'path'
 import copy from 'rollup-plugin-copy'
 import { defineConfig } from 'vite'
+import tailwindcss from '@tailwindcss/vite'
 
 function updateManifestWithImages({ outDir, imageDir }) {
   return {
@@ -49,6 +50,7 @@ export default defineConfig({
     }
   },
   plugins: [
+    tailwindcss(),
     copy({
       targets: [
         {
